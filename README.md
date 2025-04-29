@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OBS Video Playlist Manager
 
-## Getting Started
+A web application that connects to OBS Studio via WebSocket to manage and stream a playlist of video files.
 
-First, run the development server:
+## Features
+
+- Connect to OBS Studio via WebSocket protocol
+- Scan and display video files from a local directory
+- Play and stop videos directly in OBS
+- Toggle streaming on/off
+- Select between multiple media sources in OBS
+
+## Requirements
+
+- OBS Studio with WebSocket Server enabled (v28 or higher)
+- Bun (or Node.js) installed on your system
+
+## Setup
+
+### 1. Configure OBS WebSocket
+
+1. Open OBS Studio
+2. Go to `Tools` > `WebSocket Server Settings`
+3. Check `Enable WebSocket Server`
+4. Default port is `4455` (change in app/config.ts if needed)
+5. Set a password if needed (update in app/config.ts)
+
+### 2. Install Dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Navigate to the project directory
+cd obs-playlist-manager
+
+# Install dependencies
+bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Start the Development Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Access the Application
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Connect to OBS by clicking the "Check Connection" button
+2. Select the media source in OBS from the dropdown
+3. Enter the directory path containing your video files and click "Load"
+4. Click on a video in the list to play it
+5. Use the "Start Stream" / "Stop Stream" button to control streaming
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technical Details
 
-## Deploy on Vercel
+- Built with Next.js and TypeScript
+- Uses obs-websocket-js for OBS communication
+- Tailwind CSS for styling
+- API Routes for handling OBS WebSocket and file system operations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/api/obs/route.ts` - API routes for OBS WebSocket interactions
+- `app/api/files/route.ts` - API routes for scanning video files
+- `app/components/` - React components
+- `app/hooks/` - Custom React hooks for OBS and file management
+- `app/config.ts` - OBS WebSocket configuration
+
+## License
+
+MIT
