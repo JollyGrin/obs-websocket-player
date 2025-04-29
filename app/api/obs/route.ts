@@ -33,7 +33,10 @@ export async function GET(request: Request) {
         return NextResponse.json({ connected: isConnected });
       
       case 'sources':
-        const { sources } = await obs.call('GetSourcesList');
+        // Use GetInputList for OBS WebSocket v5+
+        const { inputs } = await obs.call('GetInputList');
+        // Filter for Media Source (ffmpeg_source) inputs
+        const sources = inputs.filter((input: any) => input.inputKind === 'ffmpeg_source');
         return NextResponse.json({ sources });
       
       case 'scenes':
