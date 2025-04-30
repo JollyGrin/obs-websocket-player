@@ -1,8 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useVideoFiles, VideoFile } from '../hooks/useVideoFiles';
-import { useObs } from '../hooks/useObs';
 
-export function VideoPlaylist() {
+interface ObsProps {
+  isConnected: boolean;
+  isLoading: boolean;
+  error: string | null;
+  streamActive: boolean;
+  sources: any[];
+  selectedSource: string;
+  setSelectedSource: (v: string) => void;
+  checkConnection: () => Promise<void>;
+  playVideo: (filePath: string) => Promise<void>;
+  stopVideo: () => Promise<void>;
+}
+
+export function VideoPlaylist({
+  isConnected,
+  isLoading: obsLoading,
+  error: obsError,
+  sources,
+  selectedSource,
+  playVideo,
+  stopVideo
+}: ObsProps) {
   const {
     directory,
     files,
@@ -12,16 +32,7 @@ export function VideoPlaylist() {
     formatFileSize,
     setDirectory
   } = useVideoFiles();
-  
-  const {
-    isConnected,
-    selectedSource,
-    isLoading: obsLoading,
-    error: obsError,
-    playVideo,
-    stopVideo
-  } = useObs();
-  
+
   const [directoryInput, setDirectoryInput] = useState('');
   const [currentVideo, setCurrentVideo] = useState<VideoFile | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -40,7 +51,6 @@ export function VideoPlaylist() {
 
   const handlePlay = (file: VideoFile) => {
     if (!isConnected || !selectedSource) return;
-    
     playVideo(file.path);
     setCurrentVideo(file);
     setIsPlaying(true);
@@ -48,7 +58,6 @@ export function VideoPlaylist() {
 
   const handleStop = () => {
     if (!isConnected || !selectedSource) return;
-    
     stopVideo();
     setIsPlaying(false);
   };

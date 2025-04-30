@@ -1,20 +1,28 @@
 import { useEffect } from 'react';
-import { useObs } from '../hooks/useObs';
 
-export function ObsControls() {
-  const {
-    isConnected,
-    isLoading,
-    error,
-    streamActive,
-    sources,
-    selectedSource,
-    setSelectedSource,
-    checkConnection,
-    toggleStream
-  } = useObs();
+interface ObsProps {
+  isConnected: boolean;
+  isLoading: boolean;
+  error: string | null;
+  streamActive: boolean;
+  sources: any[];
+  selectedSource: string;
+  setSelectedSource: (v: string) => void;
+  checkConnection: () => Promise<void>;
+  toggleStream: () => Promise<void>;
+}
 
-  // Check connection status on component mount
+export function ObsControls({
+  isConnected,
+  isLoading,
+  error,
+  streamActive,
+  sources,
+  selectedSource,
+  setSelectedSource,
+  checkConnection,
+  toggleStream
+}: ObsProps) {
   useEffect(() => {
     checkConnection();
   }, [checkConnection]);
@@ -22,7 +30,6 @@ export function ObsControls() {
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-6">
       <h2 className="text-xl font-semibold mb-4">OBS Connection</h2>
-      
       <div className="flex items-center mb-4">
         <div className="flex-1">
           <div className="flex items-center">
@@ -31,7 +38,6 @@ export function ObsControls() {
           </div>
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
-        
         <button
           onClick={checkConnection}
           disabled={isLoading}
@@ -40,7 +46,6 @@ export function ObsControls() {
           {isLoading ? 'Checking...' : 'Check Connection'}
         </button>
       </div>
-      
       {isConnected && (
         <>
           <div className="mb-4">
@@ -64,14 +69,13 @@ export function ObsControls() {
               )}
             </select>
           </div>
-          
           <div className="flex justify-between">
             <button
               onClick={toggleStream}
               disabled={isLoading}
               className={`px-4 py-2 ${
-                streamActive 
-                  ? 'bg-red-500 hover:bg-red-600' 
+                streamActive
+                  ? 'bg-red-500 hover:bg-red-600'
                   : 'bg-green-500 hover:bg-green-600'
               } text-white rounded disabled:opacity-50`}
             >
