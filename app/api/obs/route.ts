@@ -63,7 +63,7 @@ export async function POST(request: Request) {
         if (!params.sourceName || !params.filePath) {
           return NextResponse.json({ error: 'Missing source name or file path' }, { status: 400 });
         }
-        
+        console.log(`[OBS] Setting input '${params.sourceName}' to file '${params.filePath}'`);
         // Set media source file
         await obs.call('SetInputSettings', {
           inputName: params.sourceName,
@@ -71,25 +71,23 @@ export async function POST(request: Request) {
             local_file: params.filePath
           }
         });
-        
-        // Play the media
-        await obs.call('TriggerMediaAction', {
-          sourceName: params.sourceName,
+        console.log(`[OBS] Triggering playback on input '${params.sourceName}'`);
+        // Play the media (v5+ method)
+        await obs.call('TriggerMediaInputAction', {
+          inputName: params.sourceName,
           mediaAction: 'OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PLAY'
         });
-        
         return NextResponse.json({ success: true });
       
       case 'stopMedia':
         if (!params.sourceName) {
           return NextResponse.json({ error: 'Missing source name' }, { status: 400 });
         }
-        
-        await obs.call('TriggerMediaAction', {
-          sourceName: params.sourceName,
+        console.log(`[OBS] Stopping playback on input '${params.sourceName}'`);
+        await obs.call('TriggerMediaInputAction', {
+          inputName: params.sourceName,
           mediaAction: 'OBS_WEBSOCKET_MEDIA_INPUT_ACTION_STOP'
         });
-        
         return NextResponse.json({ success: true });
       
       case 'toggleStream':
