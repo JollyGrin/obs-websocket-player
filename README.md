@@ -2,6 +2,10 @@
 
 A web application that connects to OBS Studio via WebSocket to manage and stream a playlist of video files.
 
+
+https://github.com/user-attachments/assets/f1d11bbd-2a8a-45c9-bb6d-4b7a68563fac
+
+
 ## Features
 
 - Connect to OBS Studio via WebSocket protocol
